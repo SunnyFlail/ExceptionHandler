@@ -1,6 +1,6 @@
 <?php
 
-namespace SunnyFlail\ErrorHandler\Test;
+namespace SunnyFlail\ExceptionHandler\Test;
 
 class SuperError extends \Exception 
 {

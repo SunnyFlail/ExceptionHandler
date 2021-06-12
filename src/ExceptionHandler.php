@@ -1,12 +1,12 @@
 <?php
 
-namespace SunnyFlail\ErrorHandler;
+namespace SunnyFlail\ExceptionHandler;
 
 use ReflectionClass;
 use SplFileObject;
 use Throwable;
 
-class ErrorHandler
+class ExceptionHandler
 {
 
     public static int $EDGE_LINES = 5;
@@ -22,7 +22,7 @@ class ErrorHandler
         }
         $stackTraces = $e->getTrace(); 
 
-        require_once __DIR__."/ErrorTemplate.html.php";
+        require_once __DIR__."/ExceptionTemplate.html.php";
         die();
     }
 
