@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {},
-    "autoload-dev": {
+    "autoload": {
         "psr-4" : {
             "SunnyFlail\\ExceptionHandler\\" : "src"
         }
