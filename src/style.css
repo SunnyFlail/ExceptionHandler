@@ -100,6 +100,8 @@ body {
       justify-items: flex-start; }
       .block__body .block__line.current {
         background-color: #EEDDCB; }
+        .block__body .block__line.current .line__num {
+          color: #BB343A; }
     .block__body .line__num {
       color: #798897;
       width: 32px; }

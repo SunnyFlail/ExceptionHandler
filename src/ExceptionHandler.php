@@ -28,9 +28,13 @@ class ExceptionHandler
 
     private static function splitLast(string $string, string $separator): array
     {
-        $breakpoint = strrpos($string, $separator);
+        if (!$breakpoint = strrpos($string, $separator)) {
+            return ["", $string];
+        }
+        $split = str_split($string, $breakpoint + 1);
+        $path = array_shift($split);
 
-        return str_split($string, $breakpoint + 1);
+        return [$path, implode($split)];
     }
 
     private static function getCode(string $path, int $line)

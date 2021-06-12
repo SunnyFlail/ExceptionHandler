@@ -171,6 +171,9 @@ body {
             justify-items: flex-start;
             &.current {
                 background-color: #{$clr__red--lgt};
+                & .line__num {
+                    color: #{$clr__red};
+                }
             }
         }
 
