@@ -1,0 +1,12 @@
+{
+    "name": "sunnyflail/error-handler",
+    "description": "A simple Error Handling addon for more graphical stack traces",
+    "type": "library",
+    "license": "MIT",
+    "require": {},
+    "autoload-dev": {
+        "psr-4" : {
+            "SunnyFlail\\ErrorHandler\\" : "src"
+        }
+    }
+}
