@@ -52,6 +52,7 @@ body {
             width: 18px;
             height: 18px;
             background-image: #{icon("next", 18px, 18px, 798897)};
+            content: "";
         }
     }
     &__bottom {
@@ -163,6 +164,7 @@ body {
 
     &__body {
         display: none;
+        white-space: pre;
 
         .expanded & {
             display: block;
