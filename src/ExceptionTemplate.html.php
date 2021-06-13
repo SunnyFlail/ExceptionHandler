@@ -68,11 +68,13 @@
                                 </div>
                             </div>
                         </div>
-                        <code class="block__body">
-                            <?php foreach(self::getCode($file, $line) as ["line" => $currLine, "value" => $value] ): ?>
-                                <?php printf ('<div class="block__line%3$s"><span class="line__num">%1$s.</span><span class="line__content">%2$s</span></div>', $currLine, $value, $currLine === $line ? " current" : ""); ?>
-                            <?php endforeach; ?>
-                        </code>
+                        <pre>
+                            <code class="block__body">
+                                <?php foreach(self::getCode($file, $line) as ["line" => $currLine, "value" => $value] ): ?>
+                                    <?php printf ('<div class="block__line%3$s"><span class="line__num">%1$s.</span><span class="line__content">%2$s</span></div>', $currLine, $value, $currLine === $line ? " current" : ""); ?>
+                                <?php endforeach; ?>
+                            </code>
+                        </pre>
                     </div>
                 <?php endforeach; ?>
             </div>

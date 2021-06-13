@@ -47,9 +47,12 @@ class ExceptionHandler
         $file->seek($startLine);
 
         while ($file->valid() && $endLine !== ($currentLine = $file->key() + 1)) {
+            $line = $file->current();
+            $line = self::escapeHtmlTags($line);
+            
             yield [
                 "line" => $currentLine,
-                "value" => self::highlightBrackets($file->current())
+                "value" => self::highlightBrackets($line)
             ];
             $file->next();
         }
@@ -59,6 +62,11 @@ class ExceptionHandler
     private static function highlightBrackets(string $line): string
     {
         return preg_replace(["/[\[\]\(\)\;:=]+/", "/\-\>/"], '<span class="red">$0</span>', $line);
+    }
+
+    private static function escapeHtmlTags(string $line): string
+    {
+        return strtr($line, ["<" => "&lt;", ">" => "&gt;"]);
     }
 
 }
