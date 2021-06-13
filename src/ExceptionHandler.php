@@ -61,7 +61,7 @@ class ExceptionHandler
 
     private static function highlightBrackets(string $line): string
     {
-        return preg_replace(["/[\[\]\(\)\;:=]+/", "/\-\>/"], '<span class="red">$0</span>', $line);
+        return preg_replace(["/[\[\]\(\)\:=]+/", "/\-\>/", ], '<span class="red">$0</span>', $line);
     }
 
     private static function escapeHtmlTags(string $line): string

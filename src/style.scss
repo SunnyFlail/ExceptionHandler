@@ -4,12 +4,13 @@
 {
     $icons: (
         "plus" : #{'<svg xmlns="http://www.w3.org/2000/svg"  height="' + $height + '" viewBox="0 0 24 24" width="' + $width + '" fill="%23' + $color + '"><path d="M19,13h-6v6h-2v-6H5v-2h6V5h2v6h6V13z"/></svg>'},
-        "minus" : #{'<svg xmlns="http://www.w3.org/2000/svg" height="' + $height +'" viewBox="0 0 24 24" width="' + $width + '" fill="%23' + $color + '"><path d="M19 13H5v-2h14v2z"/></svg>'}
+        "minus" : #{'<svg xmlns="http://www.w3.org/2000/svg" height="' + $height +'" viewBox="0 0 24 24" width="' + $width + '" fill="%23' + $color + '"><path d="M19 13H5v-2h14v2z"/></svg>'},
+        "next" : #{'<svg xmlns="http://www.w3.org/2000/svg" height="' + $height + '" viewBox="0 0 24 24" width="' + $width + '" fill="%23' + $color + '"><polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/></svg>'}
     );
 
     @each $icon, $data in $icons {
         @if $icon == $name {
-            @return #{'data:image/svg+xml;utf-8,' + $data};
+            @return  url(#{"'" + 'data:image/svg+xml;utf-8,' + $data + "'"});
         }
     }
 
@@ -48,7 +49,9 @@ body {
         align-items: center;
 
         & > div + div::before {
-            content: ">";
+            width: 18px;
+            height: 18px;
+            background-image: #{icon("next", 18px, 18px, 798897)};
         }
     }
     &__bottom {
@@ -85,14 +88,14 @@ body {
     $btn-dimension: 18px;
     color: #fff;
     background-repeat: no-repeat;
-    background-image: url(#{"'" + icon("plus", $btn-dimension, $btn-dimension, 798897) + "'"});
+    background-image: #{icon("plus", $btn-dimension, $btn-dimension, 798897)};
     width: #{$btn-dimension};
     height: #{$btn-dimension};
     border-radius: 4px;
     cursor: pointer;
 
     .expanded & {
-        background-image: url(#{"'" + icon("minus", $btn-dimension, $btn-dimension, 798897) + "'"});
+        background-image: #{icon("minus", $btn-dimension, $btn-dimension, 798897)};
     }
 }
 
