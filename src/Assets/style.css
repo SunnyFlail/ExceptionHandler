@@ -99,6 +99,8 @@ body {
   .block__body {
     display: none;
     white-space: pre; }
+    .block__body:empty {
+      content: "Couldn't read the file!"; }
     .expanded .block__body {
       display: block; }
     .block__body .block__line {

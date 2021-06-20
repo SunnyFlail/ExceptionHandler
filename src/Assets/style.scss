@@ -171,6 +171,10 @@ body {
         display: none;
         white-space: pre;
 
+        &:empty {
+            content: "Couldn't read the file!";
+        }
+
         .expanded & {
             display: block;
         }

@@ -17,8 +17,9 @@ class TraceBlock
         private ?string $namespace,
         private ?string $filePath,
         private ?string $fileName,
+        private ?string $file,
         private ?string $line,
-        private ?string $type,
+        private ?string $type
     ) {
         $this->index = "block__".$index;
     }
@@ -31,10 +32,15 @@ class TraceBlock
     private function getCode()
     {
         $path = $this->filePath.$this->fileName;
+        $path = trim($path) === "" ? $this->file : $path;
         $line = $this->line;
         $startLine = $line - self::$EDGE_LINES;
         $startLine = $startLine >= 0 ? $startLine : 0;
         $endLine = $line + self::$EDGE_LINES;
+
+        if (!is_readable($path)) {
+            return [];
+        }
 
         $file = new SplFileObject($path);
         $file->seek($startLine);

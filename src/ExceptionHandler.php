@@ -67,6 +67,7 @@ class ExceptionHandler
             $namespace ?? "",
             $path ?? "",
             $fileName ?? "",
+            $file,
             $line,
             $type
         );
