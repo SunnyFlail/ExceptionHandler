@@ -18,7 +18,7 @@ class TraceBlock
         private ?string $filePath,
         private ?string $fileName,
         private ?string $file,
-        private ?string $line,
+        private ?int $line,
         private ?string $type
     ) {
         $this->index = "block__".$index;
@@ -31,12 +31,10 @@ class TraceBlock
 
     private function printLines()
     {
-        $code = $this->getCode();
-        if (!$code) {
-            return;
-        }
-        foreach($code as ["line" => $currLine, "value" => $value])
+        $valid = false;
+        foreach($this->getCode() as ["line" => $currLine, "value" => $value])
         {
+            $valid = true;
             printf (
                 '<div class="block__line%3$s">
                     <span class="line__num">%1$s.</span>
@@ -46,6 +44,9 @@ class TraceBlock
                 $value,
                 $currLine === $this->line ? " current" : ""
             );
+        }
+        if (!$valid) {
+            return printf("<div class='block__line'style='color: firebrick; font-weight: 600;'>Couldn't read file '%s'</div>", $this->file);
         }
     }
 
