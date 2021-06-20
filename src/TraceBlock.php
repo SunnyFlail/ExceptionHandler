@@ -29,6 +29,26 @@ class TraceBlock
         require __DIR__."/Assets/TraceTemplate.html.php";
     }
 
+    private function printLines()
+    {
+        $code = $this->getCode();
+        if (!$code) {
+            return;
+        }
+        foreach($code as ["line" => $currLine, "value" => $value])
+        {
+            printf (
+                '<div class="block__line%3$s">
+                    <span class="line__num">%1$s.</span>
+                    <span class="line__content">%2$s</span>
+                </div>',
+                $currLine,
+                $value,
+                $currLine === $this->line ? " current" : ""
+            );
+        }
+    }
+
     private function getCode()
     {
         $path = $this->filePath.$this->fileName;
