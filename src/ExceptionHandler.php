@@ -2,6 +2,7 @@
 
 namespace SunnyFlail\ExceptionHandler;
 
+use ErrorException;
 use ReflectionClass;
 use SplFileObject;
 use Throwable;
@@ -9,7 +10,19 @@ use Throwable;
 class ExceptionHandler
 {
 
-    public static int $EDGE_LINES = 5;
+    public static function handleError(
+        int $errNo,
+        string $errstr,
+        string $errfile,
+        int $errline
+    ) {
+        throw new ErrorException(
+            $errstr,
+            $errNo,
+            $errfile,
+            $errline
+        );
+    }
 
     public static function handleException(Throwable $e)
     {
@@ -20,10 +33,43 @@ class ExceptionHandler
         if ($exceptionParent) {
             $exceptionParent = $exceptionParent->getName();
         }
-        $stackTraces = $e->getTrace(); 
+        $exceptionCode = $e->getCode();
+        $stackTraces = $e->getTrace();
+        array_unshift($stackTraces, [
+            "file" => $e->getFile(),
+            "line" => $e->getLine(),
+            "function" => $exceptionMessage
+            ]
+        );
 
+        $stackTraces = array_map([self::class, "createTraceBlock"],  array_keys($stackTraces), $stackTraces);
+        
         require_once __DIR__."/ExceptionTemplate.html.php";
         die();
+    }
+
+    private static function createTraceBlock(int $index, array $traceData): TraceBlock
+    {
+        if ($class = $traceData["class"] ?? null) {
+            [$namespace, $className] = self::splitLast($class, "\\");
+        }
+        if ($file = $traceData["file"] ?? null) {
+            [$path, $fileName] = self::splitLast($file, "/");
+        }
+        $line = $traceData["line"] ?? null;
+        $function = $traceData["function"] ?? null;
+        $type = $traceData["type"] ?? null;
+
+        return new TraceBlock(
+            $index,
+            $function,
+            $className ?? "",
+            $namespace ?? "",
+            $path ?? "",
+            $fileName ?? "",
+            $line,
+            $type
+        );
     }
 
     private static function splitLast(string $string, string $separator): array
@@ -35,38 +81,6 @@ class ExceptionHandler
         $path = array_shift($split);
 
         return [$path, implode($split)];
-    }
-
-    private static function getCode(string $path, int $line)
-    {
-        $startLine = $line - self::$EDGE_LINES;
-        $startLine = $startLine >= 0 ? $startLine : 0;
-        $endLine = $line + self::$EDGE_LINES;
-
-        $file = new SplFileObject($path);
-        $file->seek($startLine);
-
-        while ($file->valid() && $endLine !== ($currentLine = $file->key() + 1)) {
-            $line = $file->current();
-            $line = self::escapeHtmlTags($line);
-            
-            yield [
-                "line" => $currentLine,
-                "value" => self::highlightBrackets($line)
-            ];
-            $file->next();
-        }
-
-    }
-
-    private static function highlightBrackets(string $line): string
-    {
-        return preg_replace(["/[\[\]\(\)\:=]+/", "/\-\>/", ], '<span class="red">$0</span>', $line);
-    }
-
-    private static function escapeHtmlTags(string $line): string
-    {
-        return strtr($line, ["<" => "&lt;", ">" => "&gt;"]);
     }
 
 }

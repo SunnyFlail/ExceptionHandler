@@ -4,6 +4,11 @@ body {
   margin: 0;
   font-family: "Roboto", sans-serif; }
 
+.arrow__next {
+  width: 18px;
+  height: 18px;
+  background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="%23798897"><polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/></svg>'); }
+
 .header {
   background-color: #9A0E23;
   color: #fff;
@@ -15,11 +20,6 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: center; }
-    .header__top > div + div::before {
-      width: 18px;
-      height: 18px;
-      background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="%23798897"><polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/></svg>');
-      content: ""; }
   .header__bottom {
     height: 72px;
     background-color: #BB343A; }

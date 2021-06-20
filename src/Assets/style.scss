@@ -34,6 +34,12 @@ body {
     font-family: "Roboto", sans-serif;
 }
 
+.arrow__next {
+    width: 18px;
+    height: 18px;
+    background-image: #{icon("next", 18px, 18px, 798897)};
+}
+
 .header {
     background-color: #{$clr__red--dark};
     color: #fff;
@@ -43,18 +49,17 @@ body {
         padding: #{$padding_spacing}px calc(50vw - #{$center_padding}px);
     }
     &__top {
-        height: 24px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        & > div + div::before {
-            width: 18px;
-            height: 18px;
-            background-image: #{icon("next", 18px, 18px, 798897)};
-            content: "";
+        justify-content: space-between;
+        &, &__about {
+            height: 24px;
+            display: flex;
+            align-items: center;
+        }
+        &__about {
+            justify-content: flex-start;
         }
     }
+
     &__bottom {
         height: 72px;
         background-color: #{$clr__red};
