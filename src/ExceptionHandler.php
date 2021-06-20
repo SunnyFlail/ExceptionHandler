@@ -4,7 +4,6 @@ namespace SunnyFlail\ExceptionHandler;
 
 use ErrorException;
 use ReflectionClass;
-use SplFileObject;
 use Throwable;
 
 class ExceptionHandler
@@ -18,6 +17,7 @@ class ExceptionHandler
     ) {
         throw new ErrorException(
             $errstr,
+            0,
             $errNo,
             $errfile,
             $errline

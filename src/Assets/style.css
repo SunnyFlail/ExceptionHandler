@@ -16,10 +16,13 @@ body {
   .header__top, .header__bottom {
     padding: 6px calc(50vw - 476px); }
   .header__top {
-    height: 24px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center; }
+    justify-content: space-between; }
+    .header__top, .header__top__about {
+      height: 24px;
+      display: flex;
+      align-items: center; }
+    .header__top__about {
+      justify-content: flex-start; }
   .header__bottom {
     height: 72px;
     background-color: #BB343A; }
