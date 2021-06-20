@@ -23,11 +23,9 @@ class TraceBlock
         $this->index = "block__".$index;
     }
 
-    public function __toString()
+    public function render()
     {
-        ob_start();
         require __DIR__."/Assets/TraceTemplate.html.php";
-        return ob_get_clean();
     }
 
     private function getCode()

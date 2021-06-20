@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="panel__body">
-                <?php array_walk($stackTraces, fn($stack) => print($stack)); ?>
+                <?php array_walk($stackTraces, fn($stack) => $stack->render()); ?>
             </div>
         </div>
     </main>
