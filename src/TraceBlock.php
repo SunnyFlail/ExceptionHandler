@@ -49,7 +49,6 @@ class TraceBlock
             ];
             $file->next();
         }
-
     }
 
     private function highlightBrackets(string $line): string

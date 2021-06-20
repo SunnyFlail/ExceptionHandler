@@ -3,7 +3,7 @@
         <div data-toggle-id="<?php echo $this->index ?>" class="button__expand"></div>
         <div class="block__title">
             <div class="block__trace">
-                <?php if (null !== $$this->className): ?>
+                <?php if (null !== $this->className): ?>
                     <?php printf('<span class="block__class">%s</span>', $this->className); ?>
                 <?php endif; ?>
                 <?php if (null !== $this->type): ?>
