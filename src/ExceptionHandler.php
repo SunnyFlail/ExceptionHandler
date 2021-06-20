@@ -44,7 +44,7 @@ class ExceptionHandler
 
         $stackTraces = array_map([self::class, "createTraceBlock"],  array_keys($stackTraces), $stackTraces);
         
-        require_once __DIR__."/ExceptionTemplate.html.php";
+        require_once __DIR__."/Assets/ExceptionTemplate.html.php";
         die();
     }
 

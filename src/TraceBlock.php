@@ -25,7 +25,9 @@ class TraceBlock
 
     public function __toString()
     {
-        return require "Assets/TraceTemplate.html.php";
+        ob_start();
+        require __DIR__."/Assets/TraceTemplate.html.php";
+        return ob_get_clean();
     }
 
     private function getCode()
