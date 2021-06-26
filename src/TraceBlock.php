@@ -7,50 +7,140 @@ use SplFileObject;
 class TraceBlock
 {
 
-    private ?string $index;
-    public static int $EDGE_LINES = 5;
+    /**
+     * @var static $TEMPLATE_FILE Path to TraceBlock template
+     */
+    public static $TEMPLATE_FILE = __DIR__ . "/Assets/TraceTemplate.html.php";
+    /**
+     * @var static $INCORRECT_TEMPLATE_FILE Path to template for Incorrect lines
+     */
+    public static $INCORRECT_TEMPLATE_FILE = __DIR__ . "/Assets/IncorrectLineTemplate.html.php";
+
+    /**
+     * @var string $INPUT_ID_PREFIX Prefix to be put before html id
+     */
+    public static $INPUT_ID_PREFIX = "_trace-";
+
+    /**
+     * @var int $index Index of trace block
+     */
+    private int $index;
+    
+    /**
+     * @var int $exceptionIndex Index of exception to which this trackblock relates to
+     */
+    private int $exceptionIndex;
+
+    /** 
+     * @var int EDGE_LINES Number of lines to be shown before and after the line on which the error occured
+     */
+    public static $EDGE_LINES = 5;
+    private bool $valid;
 
     public function __construct(
-        ?string $index,
-        private ?string $function,
-        private ?string $className,
-        private ?string $namespace,
-        private ?string $filePath,
-        private ?string $fileName,
-        private ?string $file,
-        private ?int $line,
-        private ?string $type
+        int $index,
+        int $exceptionIndex,
+        ?string $function,
+        ?string $className,
+        ?string $namespace,
+        ?string $filePath,
+        ?string $fileName,
+        ?string $file,
+        ?int $line,
+        ?string $type
     ) {
-        $this->index = "block__".$index;
+        $this->valid = false;
+        $this->function = $function;
+        $this->className = $className;
+        $this->namespace = $namespace;
+        $this->filePath = $filePath;
+        $this->fileName = $fileName;
+        $this->file = $file;
+        $this->line = $line;
+        $this->type = $type;
+        $this->index = $index;
+        $this->exceptionIndex = $exceptionIndex;
+    }
+
+    /**
+     * Creates a html id string with set prefix and provided indexes
+     * 
+     * @return string
+     */
+    public static function prepareId($index, $exceptionIndex): string
+    {
+        return ExceptionData::prepareId($exceptionIndex) . self::$INPUT_ID_PREFIX . $index;
     }
 
     public function render()
     {
         require __DIR__."/Assets/TraceTemplate.html.php";
     }
-
-    private function printLines()
+    
+    public function getIndex(): int
     {
-        $valid = false;
-        foreach($this->getCode() as ["line" => $currLine, "value" => $value])
-        {
-            $valid = true;
-            printf (
-                '<div class="block__line%3$s">
-                    <span class="line__num">%1$s.</span>
-                    <span class="line__content">%2$s</span>
-                </div>',
-                $currLine,
-                $value,
-                $currLine === $this->line ? " current" : ""
-            );
-        }
-        if (!$valid) {
-            return printf("<div class='block__line'style='color: firebrick; font-weight: 600;'>Couldn't read file '%s'</div>", $this->file);
-        }
+        return $this->index; 
     }
 
-    private function getCode()
+    public function getId(): string
+    {
+        return self::prepareId($this->exceptionIndex, $this->index);
+    }
+
+    public function getLineId(): ?string
+    {
+        if (null === $this->line) {
+            return null;
+        }
+        return TraceLine::prepareId($this->line, $this->index, $this->exceptionIndex);
+    }
+
+    public function getNamespace(): ?string
+    {
+        return $this->namespace;
+    }
+
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+    
+    public function getFileName(): ?string
+    {
+        return $this->fileName;
+    }
+
+    public function getFile(): ?string
+    {
+        return $this->file;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function getLine(): ?int
+    {
+        return $this->line;
+    }
+    
+    public function getClassName(): ?string
+    {
+        return $this->className;
+    }
+
+    public function getFunction(): ?string
+    {
+        return $this->function;
+    }
+
+    public function isValid(): bool
+    {
+        return $this->valid;
+    }
+
+    public function getLines()
     {
         $path = $this->filePath.$this->fileName;
         $path = trim($path) === "" ? $this->file : $path;
@@ -63,6 +153,8 @@ class TraceBlock
             return [];
         }
 
+        $this->valid = true;
+
         $file = new SplFileObject($path);
         $file->seek($startLine);
 
@@ -70,10 +162,14 @@ class TraceBlock
             $line = $file->current();
             $line = $this->escapeHtmlTags($line);
             
-            yield [
-                "line" => $currentLine,
-                "value" => $this->highlightBrackets($line)
-            ];
+            yield new TraceLine(
+                $currentLine,
+                $this->index,
+                $this->exceptionIndex,
+                $this->highlightBrackets($line),
+                $currentLine === $this->line
+            );
+
             $file->next();
         }
     }
